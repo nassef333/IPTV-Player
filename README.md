@@ -1,199 +1,246 @@
 <div align="center">
 
-# 📺 IPTV Web Player
+<img src="https://capsule-render.vercel.app/api?type=venom&color=0:0f0c29,50:302b63,100:24243e&height=300&section=header&text=IPTV%20PLAYER&fontSize=80&fontColor=ffffff&fontAlignY=55&desc=Stream%20Everything.%20Everywhere.%20Instantly.&descAlignY=75&descSize=20&descColor=a78bfa&animation=fadeIn" width="100%"/>
 
-**تطبيق ويب حديث لمشاهدة القنوات التلفزيونية والأفلام والمسلسلات عبر بروتوكول IPTV**
+<br/>
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-a78bfa?style=for-the-badge)](LICENSE)
+
+<br/>
+
+> **A next-generation IPTV web player** — live channels, blockbuster movies, and binge-worthy series,  
+> all in one sleek, blazing-fast interface.
+
+<br/>
+
+---
 
 </div>
 
----
+## 🌌 What Is This?
 
-## ✨ المميزات
+**IPTV Player** is a modern, open-source streaming platform built for people who want the full entertainment experience — live TV, movies, and TV shows — directly in their browser. Load any M3U playlist and you're instantly inside your own personal streaming service.
 
-### 🎯 الوظائف الأساسية
-- **📺 تشغيل القنوات الحية** - دعم كامل لقنوات البث المباشر
-- **🎬 مكتبة الأفلام** - تصفح ومشاهدة الأفلام بسهولة
-- **📺 المسلسلات** - متابعة المسلسلات المفضلة
-- **🔍 بحث متقدم** - البحث في القنوات والأفلام والمسلسلات
-- **📁 تصنيف ذكي** - تنظيم المحتوى حسب الفئات
-
-### 🎨 تجربة المستخدم
-- **🌙 الوضع الليلي** - دعم كامل للثيمات الفاتحة والداكنة
-- **🌍 تعدد اللغات** - دعم اللغة العربية والإنجليزية
-- **⭐ المفضلة** - حفظ القنوات والمحتوى المفضل
-- **📱 متجاوب** - يعمل على جميع الأجهزة والشاشات
-- **⚡ سريع** - أداء عالي وتحميل سريع
-
-### 🔧 تقني
-- **🎥 مشغل فيديو متقدم** - باستخدام Media Chrome
-- **📡 دعم HLS** - تشغيل تدفقات HLS باستخدام hls.js
-- **📋 M3U Parser** - تحليل قوائم التشغيل M3U/M3U8
-- **🛡️ معالجة الأخطاء** - إدارة شاملة للأخطاء
-- **💾 تخزين محلي** - حفظ الإعدادات والمفضلة
+No subscriptions. No setup hell. Just stream.
 
 ---
 
-## 🚀 البدء السريع
+## ✨ Feature Highlights
 
-### المتطلبات
-- Node.js 20 أو أحدث
-- npm أو yarn أو pnpm
+<table>
+<tr>
+<td width="50%">
 
-### التثبيت
+### 📡 Live TV
+Full support for live channel streaming with real-time playback. Browse channels by category, search instantly, and save your favorites for one-click access.
+
+</td>
+<td width="50%">
+
+### 🎬 Movies
+A fully organized movie library with smart categorization. Browse by genre, search by title, and jump straight into playback — no friction.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 📺 TV Series
+Season-by-season, episode-by-episode navigation for TV series. Keep track of where you left off and pick up right where you stopped.
+
+</td>
+<td width="50%">
+
+### 🔍 Smart Search
+A unified search bar that queries across channels, movies, and series simultaneously. Results appear as you type.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### ⭐ Favorites
+Bookmark anything — channels, movies, or episodes — with a single click. Your favorites persist locally across sessions.
+
+</td>
+<td width="50%">
+
+### 🌙 Dark / Light Mode
+Designed from the ground up for both dark cinema mode and crisp light mode. Switches instantly with full system preference support.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🌍 Multi-Language
+Full support for **Arabic** and **English** with proper RTL layout for Arabic. Switch languages on the fly from the top bar.
+
+</td>
+<td width="50%">
+
+### 📱 Fully Responsive
+Pixel-perfect experience from 4K monitors to mobile phones. Every layout element adapts to your screen.
+
+</td>
+</tr>
+</table>
+
+---
+
+## ⚙️ Tech Stack
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        IPTV PLAYER STACK                        │
+├──────────────────────────┬──────────────────────────────────────┤
+│  Framework               │  Next.js 16 (App Router)            │
+│  UI Library              │  React 19                           │
+│  Language                │  TypeScript 5                       │
+│  Styling                 │  Tailwind CSS v4                    │
+│  Video Engine            │  Media Chrome + hls.js              │
+│  Icons                   │  Lucide React                       │
+│  Playlist Parsing        │  Custom M3U / M3U8 Parser           │
+│  State & Storage         │  React Hooks + LocalStorage         │
+│  i18n                    │  Custom i18n (AR / EN)              │
+└──────────────────────────┴──────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js** `v20` or higher
+- **npm**, **yarn**, or **pnpm**
+
+### Installation
 
 ```bash
-# استنساخ المشروع
+# 1. Clone the repo
 git clone https://github.com/yourusername/iptv.git
 cd iptv
 
-# تثبيت الاعتماديات
+# 2. Install dependencies
 npm install
-# أو
-yarn install
-# أو
-pnpm install
-```
 
-### التشغيل
-
-```bash
-# تشغيل بيئة التطوير
+# 3. Start the dev server
 npm run dev
-# أو
-yarn dev
-# أو
-pnpm dev
 ```
 
-افتح المتصفح على [http://localhost:3000](http://localhost:3000)
+Open your browser at → **[http://localhost:3000](http://localhost:3000)**
 
-### البناء للإنتاج
+### Production Build
 
 ```bash
-# بناء المشروع
 npm run build
-
-# تشغيل النسخة الإنتاجية
 npm start
 ```
 
 ---
 
-## 📖 الاستخدام
+## 🎯 How To Use
 
-### إضافة قائمة تشغيل M3U
+**1. Add your M3U playlist**
+Paste any M3U or M3U8 URL into the input field on the home screen. The player parses it automatically and organizes everything into channels, movies, and series.
 
-1. افتح التطبيق
-2. أدخل رابط قائمة التشغيل M3U/M3U8
-3. سيتم تحليل القائمة تلقائياً
-4. استمتع بمشاهدة المحتوى
+**2. Browse & Search**
+Use the top navigation to switch between Live TV, Movies, and Series. Use the search bar to find anything instantly.
 
-### الميزات التفاعلية
+**3. Play content**
+Click on any channel, movie, or episode to launch the built-in video player with full HLS support.
 
-- **البحث**: استخدم شريط البحث للعثور على القنوات أو الأفلام
-- **التصفية**: تصفية المحتوى حسب الفئة أو النوع
-- **المفضلة**: أضف المحتوى المفضل لقائمة المفضلة
-- **اللغة**: غير اللغة من الزر الموجود في الشريط العلوي
-- **الثيم**: بدّل بين الوضع الفاتح والداكن
+**4. Manage Favorites**
+Hit the ★ icon on any item to add it to your Favorites tab for quick access later.
 
----
-
-## 🛠️ التقنيات المستخدمة
-
-### الواجهة الأمامية
-- **[Next.js 16](https://nextjs.org/)** - إطار عمل React
-- **[React 19](https://react.dev/)** - مكتبة واجهة المستخدم
-- **[TypeScript](https://www.typescriptlang.org/)** - لغة البرمجة
-- **[Tailwind CSS 4](https://tailwindcss.com/)** - إطار عمل التصميم
-
-### مشغل الفيديو
-- **[Media Chrome](https://media-chrome.org/)** - مشغل فيديو مخصص
-- **[hls.js](https://github.com/video-dev/hls.js/)** - دعم HLS
-
-### الأدوات المساعدة
-- **[Lucide React](https://lucide.dev/)** - مكتبة الأيقونات
-- **[clsx](https://github.com/lukeed/clsx)** - إدارة الكلاسات
-- **[tailwind-merge](https://github.com/dcastilloc/tailwind-merge)** - دمج Tailwind
+**5. Customize**
+Toggle dark/light mode and switch between Arabic and English from the top toolbar — your preferences are saved automatically.
 
 ---
 
-## 📁 هيكل المشروع
+## 📁 Project Structure
 
 ```
 iptv/
-├── public/                 # الملفات الثابتة
-├── src/
-│   ├── app/               # صفحات Next.js
-│   │   ├── api/          # API Routes
-│   │   │   ├── channels/ # قنوات البث
-│   │   │   └── movies/   # الأفلام
-│   │   ├── browse/       # صفحة التصفح
-│   │   ├── favorites/    # صفحة المفضلة
-│   │   └── Player.tsx    # مشغل الفيديو
-│   ├── components/       # المكونات المشتركة
-│   │   ├── LanguageToggle.tsx
-│   │   └── ThemeToggle.tsx
-│   ├── lib/              # المكتبات المساعدة
-│   │   ├── m3uParser.ts  # محلل M3U
-│   │   ├── i18n/         # الترجمة
-│   │   └── useFavorites.ts
-│   └── types/            # تعريفات TypeScript
-├── package.json
-├── tsconfig.json
-└── next.config.ts
+├── public/                    # Static assets
+└── src/
+    ├── app/                   # Next.js App Router pages
+    │   ├── api/
+    │   │   ├── channels/      # Live TV API routes
+    │   │   └── movies/        # Movies API routes
+    │   ├── browse/            # Browse page
+    │   ├── favorites/         # Favorites page
+    │   └── Player.tsx         # Core video player
+    ├── components/
+    │   ├── LanguageToggle.tsx # AR / EN switcher
+    │   └── ThemeToggle.tsx    # Dark / light toggle
+    ├── lib/
+    │   ├── m3uParser.ts       # M3U / M3U8 playlist parser
+    │   ├── useFavorites.ts    # Favorites hook
+    │   └── i18n/              # Translation files
+    └── types/                 # TypeScript type definitions
 ```
 
 ---
 
-## 🔧 التكوين
+## 🌐 Environment Variables
 
-### متغيرات البيئة
-
-يمكنك إضافة متغيرات البيئة في ملف `.env.local`:
+Create a `.env.local` file in the root directory:
 
 ```env
-# إعدادات اختيارية
-NEXT_PUBLIC_API_URL=your_api_url
+# Optional — override the default API base URL
+NEXT_PUBLIC_API_URL=your_api_url_here
 ```
 
 ---
 
-## 🤝 المساهمة
+## 🤝 Contributing
 
-نرحب بالمساهمات! إذا كنت تريد المساهمة في هذا المشروع:
+Contributions are welcome and appreciated. Here's how to get involved:
 
-1. Fork المشروع
-2. أنشئ فرع للميزة (`git checkout -b feature/AmazingFeature`)
-3. Commit التغييرات (`git commit -m 'Add some AmazingFeature'`)
-4. Push للفرع (`git push origin feature/AmazingFeature`)
-5. افتح Pull Request
+1. **Fork** the repository
+2. **Create** your feature branch → `git checkout -b feature/your-feature`
+3. **Commit** your changes → `git commit -m "feat: add your feature"`
+4. **Push** to your branch → `git push origin feature/your-feature`
+5. **Open** a Pull Request and describe what you've added
 
----
-
-## 📝 الترخيص
-
-هذا المشروع مرخص تحت ترخيص MIT - راجع ملف [LICENSE](LICENSE) للتفاصيل
+Please keep PRs focused and well-described. Bug reports and feature ideas are always welcome via [Issues](../../issues).
 
 ---
 
-## 🙏 شكر وتقدير
+## 📜 License
 
-- [Next.js](https://nextjs.org/) - إطار العمل الرائع
-- [Media Chrome](https://media-chrome.org/) - مشغل الفيديو الممتاز
-- [Tailwind CSS](https://tailwindcss.com/) - إطار التصميم القوي
-- [Lucide](https://lucide.dev/) - الأيقونات الجميلة
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
+
+---
+
+## 🙌 Credits & Acknowledgements
+
+| Tool | Role |
+|------|------|
+| [Next.js](https://nextjs.org/) | The backbone of the entire app |
+| [Media Chrome](https://media-chrome.org/) | Customizable, powerful video player |
+| [hls.js](https://github.com/video-dev/hls.js/) | Seamless HLS stream playback |
+| [Tailwind CSS](https://tailwindcss.com/) | Beautiful, utility-first styling |
+| [Lucide React](https://lucide.dev/) | Clean, consistent icon library |
 
 ---
 
 <div align="center">
 
-**صُنع بـ ❤️ لمحبي الترفيه**
+<br/>
 
-[⬆ العودة للأعلى](#-iptv-web-player)
+**Built with ❤️ for movie lovers, series addicts, and live TV fans**
+
+<br/>
+
+[![⬆ Back to Top](https://img.shields.io/badge/⬆_Back_to_Top-302b63?style=for-the-badge)](#-iptv-player)
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=120&section=footer" width="100%"/>
 
 </div>
