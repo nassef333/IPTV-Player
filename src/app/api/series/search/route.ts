@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSeries } from '@/lib/xtream';
+import { getSeries, setXtreamCredentials } from '@/lib/xtream';
 
 // Fetch ALL series across all categories and support search/sort/paginate
 export async function GET(req: NextRequest) {
+  const playlistUrl = req.nextUrl.searchParams.get('playlistUrl');
   const q         = req.nextUrl.searchParams.get('q')?.trim().toLowerCase() ?? '';
   const ratingMin = parseFloat(req.nextUrl.searchParams.get('rating_min') ?? '0');
   const yearMin   = parseInt(req.nextUrl.searchParams.get('year_min') ?? '0');
@@ -10,9 +11,26 @@ export async function GET(req: NextRequest) {
   const page      = Math.max(1, parseInt(req.nextUrl.searchParams.get('page')  ?? '1'));
   const limit     = Math.min(200, Math.max(1, parseInt(req.nextUrl.searchParams.get('limit') ?? '48')));
 
+  if (!playlistUrl) {
+    return NextResponse.json({ error: 'Playlist URL is required' }, { status: 400 });
+  }
+
   try {
+    // Extract credentials from playlist URL
+    const url = new URL(playlistUrl);
+    const baseUrl = url.origin;
+    const username = url.username || url.searchParams.get('username') || '';
+    const password = url.password || url.searchParams.get('password') || '';
+
+    if (!username || !password) {
+      return NextResponse.json({ error: 'Invalid playlist URL: missing credentials' }, { status: 400 });
+    }
+
+    // Set credentials for this request
+    setXtreamCredentials(baseUrl, username, password);
+
     // Passing no categoryId fetches all series across every category
-    const all = await getSeries();
+    const all = await getSeries(undefined, baseUrl, username, password);
 
     // ── Filter ────────────────────────────────────────────────────────────────
     let results = all.filter((s) => {

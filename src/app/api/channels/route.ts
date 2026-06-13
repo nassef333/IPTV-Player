@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
     if (categoryId) {
       const action = section === 'live' ? 'get_live_streams' : 
                      section === 'movies' ? 'get_vod_streams' : 
-                     'get_series_streams';
+                     'get_series';
       url.searchParams.set('action', action);
       url.searchParams.set('category_id', categoryId);
     } else {
@@ -65,12 +65,13 @@ export async function GET(req: NextRequest) {
     }
 
     let channels;
-    
+
     if (categoryId) {
       // Parse JSON response from Xtream Codes API
       try {
         const data = JSON.parse(content);
-        channels = data || [];
+        // Xtream API returns { channels: [...] } format for series, extract the array
+        channels = Array.isArray(data) ? data : (data?.channels || []);
       } catch (e) {
         throw new Error('Failed to parse streams JSON');
       }

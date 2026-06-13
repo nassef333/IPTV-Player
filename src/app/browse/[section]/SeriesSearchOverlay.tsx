@@ -9,6 +9,7 @@ import {
   Play, Clapperboard, Loader2, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import type { XtreamSeriesStream } from '@/lib/xtream';
+import { usePlaylistUrl } from '@/lib/usePlaylistUrl';
 
 const PAGE_SIZE = 48;
 
@@ -144,6 +145,7 @@ export default function SeriesSearchOverlay({
 }) {
   const inputRef  = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { playlistUrl } = usePlaylistUrl();
 
   // all series — loaded with pagination
   const [pageItems,  setPageItems]  = useState<XtreamSeriesStream[]>([]);
@@ -187,8 +189,9 @@ export default function SeriesSearchOverlay({
   const loadSeries = useCallback(async () => {
     const minRating = RATING_OPTIONS[ratingIdx].min;
     const minYear = YEAR_OPTIONS[yearIdx].value;
-    
+
     const params = new URLSearchParams({
+      playlistUrl: playlistUrl || '',
       q: query,
       sort,
       rating_min: minRating.toString(),
@@ -230,7 +233,7 @@ export default function SeriesSearchOverlay({
     if (open && hasSearched) {
       loadSeries();
     }
-  }, [open, hasSearched, loadSeries]);
+  }, [open, hasSearched, page]);
 
   // ── handle search button click ─────────────────────────────────────────────────
   const handleSearch = useCallback(() => {

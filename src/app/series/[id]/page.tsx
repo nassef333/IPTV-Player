@@ -9,14 +9,20 @@ import {
 import Player from '@/app/Player';
 import type { XtreamSeriesInfo, XtreamSeriesEpisode } from '@/lib/xtream';
 import { useFavorites } from '@/lib/useFavorites';
+import { usePlaylistUrl } from '@/lib/usePlaylistUrl';
 
-const XTREAM_BASE = process.env.NEXT_PUBLIC_XTREAM_BASE_URL ?? '';
-const USERNAME   = process.env.NEXT_PUBLIC_XTREAM_USERNAME  ?? '';
-const PASSWORD   = process.env.NEXT_PUBLIC_XTREAM_PASSWORD  ?? '';
+function getEpisodeUrl(episode: XtreamSeriesEpisode, playlistUrl: string): string {
+  try {
+    const url = new URL(playlistUrl);
+    const baseUrl = url.origin;
+    const username = url.username || url.searchParams.get('username') || '';
+    const password = url.password || url.searchParams.get('password') || '';
 
-function getEpisodeUrl(episode: XtreamSeriesEpisode): string {
-  if (!XTREAM_BASE || !USERNAME || !PASSWORD) return '';
-  return `${XTREAM_BASE}/series/${USERNAME}/${PASSWORD}/${episode.id}.${episode.container_extension || 'mp4'}`;
+    if (!username || !password) return '';
+    return `${baseUrl}/series/${username}/${password}/${episode.id}.${episode.container_extension || 'mp4'}`;
+  } catch {
+    return '';
+  }
 }
 
 function formatDuration(secs?: number): string {
@@ -115,11 +121,18 @@ export default function SeriesDetailPage() {
 
   const accent = '#a855f7';
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { playlistUrl } = usePlaylistUrl();
 
   useEffect(() => {
+    if (!playlistUrl) {
+      setError('Playlist URL is required. Please set it in settings.');
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
-    fetch(`/api/series/info?series_id=${seriesId}`)
+    fetch(`/api/series/info?series_id=${seriesId}&playlistUrl=${encodeURIComponent(playlistUrl)}`)
       .then((r) => { if (!r.ok) throw new Error(`Error ${r.status}`); return r.json(); })
       .then((data: XtreamSeriesInfo) => {
         setInfo(data);
@@ -130,11 +143,11 @@ export default function SeriesDetailPage() {
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-  }, [seriesId]);
+  }, [seriesId, playlistUrl]);
 
   const handlePlay = useCallback((ep: XtreamSeriesEpisode) => {
-    setPlaying({ url: getEpisodeUrl(ep), name: ep.title });
-  }, []);
+    setPlaying({ url: getEpisodeUrl(ep, playlistUrl || ''), name: ep.title });
+  }, [playlistUrl]);
 
   // ── seasons that actually have episodes ───────────────────────────────────
   const availableSeasons = info

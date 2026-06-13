@@ -5,36 +5,54 @@ import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Search, Play, Star, Filter, X } from 'lucide-react';
 import Player from '@/app/Player';
 import type { XtreamLiveStream, XtreamVodStream, XtreamSeriesStream } from '@/lib/xtream';
-
-const XTREAM_BASE = process.env.NEXT_PUBLIC_XTREAM_BASE_URL || '';
-const USERNAME = process.env.NEXT_PUBLIC_XTREAM_USERNAME || '';
-const PASSWORD = process.env.NEXT_PUBLIC_XTREAM_PASSWORD || '';
+import { usePlaylistUrl } from '@/lib/usePlaylistUrl';
 
 type Section = 'live' | 'movies' | 'series';
 type AnyStream = XtreamLiveStream | XtreamVodStream | XtreamSeriesStream;
+
+function getProxiedImageUrl(url: string): string {
+  if (!url) return '';
+  // Use proxy for external images to avoid CORS issues
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return `/api/image-proxy?url=${encodeURIComponent(url)}`;
+  }
+  return url;
+}
 
 interface PlayTarget {
   url: string;
   name: string;
 }
 
-function getStreamUrl(section: Section, stream: AnyStream): string {
-  if (!XTREAM_BASE || !USERNAME || !PASSWORD) return '';
-  if (section === 'live') {
-    const s = stream as XtreamLiveStream;
-    return `${XTREAM_BASE}/live/${USERNAME}/${PASSWORD}/${s.stream_id}.m3u8`;
+function getStreamUrl(section: Section, stream: AnyStream, playlistUrl: string): string {
+  if (!playlistUrl) return '';
+
+  try {
+    const url = new URL(playlistUrl);
+    const base = url.origin;
+    const username = url.username || url.searchParams.get('username') || '';
+    const password = url.password || url.searchParams.get('password') || '';
+
+    if (!username || !password) return '';
+
+    if (section === 'live') {
+      const s = stream as XtreamLiveStream;
+      return `${base}/live/${username}/${password}/${s.stream_id}.m3u8`;
+    }
+    if (section === 'movies') {
+      const s = stream as XtreamVodStream;
+      return `${base}/movie/${username}/${password}/${s.stream_id}.${s.container_extension || 'mkv'}`;
+    }
+    return '';
+  } catch {
+    return '';
   }
-  if (section === 'movies') {
-    const s = stream as XtreamVodStream;
-    return `${XTREAM_BASE}/movie/${USERNAME}/${PASSWORD}/${s.stream_id}.${s.container_extension || 'mkv'}`;
-  }
-  return '';
 }
 
 function getIcon(stream: AnyStream, section: Section): string {
-  if (section === 'live') return (stream as XtreamLiveStream).stream_icon || '';
-  if (section === 'movies') return (stream as XtreamVodStream).stream_icon || '';
-  return (stream as XtreamSeriesStream).cover || '';
+  if (section === 'live') return getProxiedImageUrl((stream as XtreamLiveStream).stream_icon || '');
+  if (section === 'movies') return getProxiedImageUrl((stream as XtreamVodStream).stream_icon || '');
+  return getProxiedImageUrl((stream as XtreamSeriesStream).cover || '');
 }
 
 function getRating(stream: AnyStream, section: Section): number | null {
@@ -48,6 +66,7 @@ export default function CategoryPage() {
   const router = useRouter();
   const section = params.section as Section;
   const categoryId = params.categoryId as string;
+  const { playlistUrl } = usePlaylistUrl();
 
   const [streams, setStreams] = useState<AnyStream[]>([]);
   const [categoryName, setCategoryName] = useState('');
@@ -104,10 +123,10 @@ export default function CategoryPage() {
         router.push(`/movie/${s.stream_id}`);
         return;
       }
-      const url = getStreamUrl(section, stream);
+      const url = getStreamUrl(section, stream, playlistUrl);
       setPlaying({ url, name: stream.name });
     },
-    [section, router]
+    [section, router, playlistUrl]
   );
 
   const handleSearch = () => {
@@ -207,8 +226,8 @@ export default function CategoryPage() {
         </div>
 
         {/* Search & Filters */}
-        <div className="flex items-center gap-3">
-          <div className="relative w-64">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="relative w-32 sm:w-48 md:w-64">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
@@ -229,7 +248,7 @@ export default function CategoryPage() {
           </div>
           <button
             onClick={handleSearch}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-full text-sm font-medium transition"
+            className="hidden sm:flex px-4 py-2 bg-red-600 hover:bg-red-700 rounded-full text-sm font-medium transition"
           >
             Search
           </button>

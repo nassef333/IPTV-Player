@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getVodStreams } from '@/lib/xtream';
+import { getVodStreams, setXtreamCredentials } from '@/lib/xtream';
 
 // Fetch ALL movies using category_id=all and cache aggressively
 // This endpoint is used by the advanced search page
 export async function GET(req: NextRequest) {
+  const playlistUrl = req.nextUrl.searchParams.get('playlistUrl');
   const q = req.nextUrl.searchParams.get('q')?.trim().toLowerCase() ?? '';
   const ratingMin = parseFloat(req.nextUrl.searchParams.get('rating_min') ?? '0');
   const ratingMax = parseFloat(req.nextUrl.searchParams.get('rating_max') ?? '5');
@@ -12,9 +13,26 @@ export async function GET(req: NextRequest) {
   const page = Math.max(1, parseInt(req.nextUrl.searchParams.get('page') ?? '1'));
   const limit = Math.min(100, Math.max(1, parseInt(req.nextUrl.searchParams.get('limit') ?? '48')));
 
+  if (!playlistUrl) {
+    return NextResponse.json({ error: 'Playlist URL is required' }, { status: 400 });
+  }
+
   try {
+    // Extract credentials from playlist URL
+    const url = new URL(playlistUrl);
+    const baseUrl = url.origin;
+    const username = url.username || url.searchParams.get('username') || '';
+    const password = url.password || url.searchParams.get('password') || '';
+
+    if (!username || !password) {
+      return NextResponse.json({ error: 'Invalid playlist URL: missing credentials' }, { status: 400 });
+    }
+
+    // Set credentials for this request
+    setXtreamCredentials(baseUrl, username, password);
+
     // 'all' fetches every VOD stream across all categories
-    const all = await getVodStreams('all');
+    const all = await getVodStreams('all', baseUrl, username, password);
 
     // ── Filter ────────────────────────────────────────────────────────────────
     let results = all.filter((m) => {

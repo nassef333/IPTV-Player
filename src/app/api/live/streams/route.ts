@@ -9,7 +9,9 @@ export async function GET(req: NextRequest) {
 
   try {
     const streams = await getLiveStreams(categoryId, baseUrl, username, password);
-    return NextResponse.json(streams, {
+    // Xtream API returns { channels: [...] } format for live streams, extract the array
+    const liveStreams = Array.isArray(streams) ? streams : (streams as any)?.channels || [];
+    return NextResponse.json(liveStreams, {
       headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60' },
     });
   } catch (error) {

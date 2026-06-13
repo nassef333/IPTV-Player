@@ -58,9 +58,9 @@ export default function Home() {
           <ThemeToggle />
           {/* Settings */}
           <Link href="/settings"
-            className="hidden sm:flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-200 text-xs sm:text-sm font-medium text-white/90 hover:text-white backdrop-blur-sm">
+            className="flex items-center gap-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-200 text-xs sm:text-sm font-medium text-white/90 hover:text-white backdrop-blur-sm">
             <Settings size={16} className="text-white/60" />
-            <span className="hidden md:inline">{t('common.settings')}</span>
+            <span className="hidden sm:inline">{t('common.settings')}</span>
           </Link>
           {/* Favorites shortcut */}
           <Link href="/favorites"

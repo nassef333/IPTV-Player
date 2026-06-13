@@ -9,7 +9,9 @@ export async function GET(req: NextRequest) {
 
   try {
     const series = await getSeries(categoryId, baseUrl, username, password);
-    return NextResponse.json(series, {
+    // Xtream API returns { channels: [...] } for series, extract the array
+    const streams = Array.isArray(series) ? series : (series as any)?.channels || [];
+    return NextResponse.json(streams, {
       headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60' },
     });
   } catch (error) {

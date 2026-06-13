@@ -9,6 +9,8 @@ import { useFavorites } from '@/lib/useFavorites';
 import { usePlaylistUrl } from '@/lib/usePlaylistUrl';
 import { useLanguage } from '@/lib/i18n';
 import LanguageToggle from '@/components/LanguageToggle';
+import MovieSearchOverlay from './MovieSearchOverlay';
+import SeriesSearchOverlay from './SeriesSearchOverlay';
 
 type Section = 'live' | 'movies' | 'series';
 
@@ -50,12 +52,47 @@ const SECTION_META: Record<Section, {
 
 interface PlayTarget { url: string; name: string; }
 
-function getStreamUrl(stream: IPTVItem): string {
-  return stream.url;
+function buildStreamUrl(stream: IPTVItem, playlistUrl: string): string {
+  // If the stream already has a valid URL, use it
+  if (stream.url && (stream.url.startsWith('http://') || stream.url.startsWith('https://'))) {
+    return stream.url;
+  }
+
+  // Otherwise, build the URL from playlist URL for Xtream Codes
+  try {
+    const url = new URL(playlistUrl);
+    const base = url.origin;
+    const username = url.username || url.searchParams.get('username') || '';
+    const password = url.password || url.searchParams.get('password') || '';
+
+    if (!username || !password) {
+      return stream.url || '';
+    }
+
+    // Build Xtream Codes stream URL
+    const ext = stream.type === 'live' ? 'm3u8' : stream.type === 'movie' ? 'mkv' : 'mp4';
+    const path = stream.type === 'live' ? 'live' : stream.type === 'movie' ? 'movie' : 'series';
+    return `${base}/${path}/${username}/${password}/${stream.id}.${ext}`;
+  } catch {
+    return stream.url || '';
+  }
+}
+
+function getStreamUrl(stream: IPTVItem, playlistUrl: string): string {
+  return buildStreamUrl(stream, playlistUrl);
+}
+
+function getProxiedImageUrl(url: string): string {
+  if (!url) return '';
+  // Use proxy for external images to avoid CORS issues
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return `/api/image-proxy?url=${encodeURIComponent(url)}`;
+  }
+  return url;
 }
 
 function getIcon(stream: IPTVItem): string {
-  return stream.logo || '';
+  return getProxiedImageUrl(stream.logo || '');
 }
 
 function getRating(stream: IPTVItem): number | null {
@@ -117,6 +154,7 @@ export default function BrowsePage() {
   // ── misc ────────────────────────────────────────────────────────────────────
   const [playing,     setPlaying]     = useState<PlayTarget | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchOpen,   setSearchOpen]   = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const { isFavorite, toggleFavorite } = useFavorites();
 
@@ -170,9 +208,9 @@ export default function BrowsePage() {
       .then((data: { channels: any[] }) => {
         // Transform API response to IPTVItem format
         const transformed = data.channels.map((item: any): IPTVItem => ({
-          id: item.stream_id || item.id,
+          id: item.stream_id || item.series_id || item.id,
           name: item.name,
-          logo: item.stream_icon || item.icon,
+          logo: item.stream_icon || item.cover || item.icon,
           url: item.url,
           group: selectedGroup,
           type: section === 'movies' ? 'movie' : section,
@@ -185,14 +223,14 @@ export default function BrowsePage() {
 
   const handlePlay = useCallback(
     (stream: IPTVItem) => {
-      const url = getStreamUrl(stream);
+      const url = getStreamUrl(stream, playlistUrl);
       setPlaying({ url, name: stream.name });
     },
-    [],
+    [playlistUrl],
   );
 
-  const openSearch  = useCallback(() => {}, []);
-  const closeSearch = useCallback(() => {}, []);
+  const openSearch  = useCallback(() => setSearchOpen(true), []);
+  const closeSearch = useCallback(() => setSearchOpen(false), []);
 
   if (!meta) {
     return (
@@ -258,7 +296,7 @@ export default function BrowsePage() {
           {/* movie search CTA */}
           {section === 'movies' && (
             <button onClick={openSearch}
-              className="hidden sm:flex items-center gap-2 rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-white/50
+              className="flex items-center gap-2 rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-white/50
                          hover:text-white transition shrink-0"
               style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
               aria-label="Open movie search"
@@ -271,7 +309,7 @@ export default function BrowsePage() {
           {/* series search CTA */}
           {section === 'series' && (
             <button onClick={openSearch}
-              className="hidden sm:flex items-center gap-2 rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-white/50
+              className="flex items-center gap-2 rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-white/50
                          hover:text-white transition shrink-0"
               style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
               aria-label="Open series search"
@@ -483,7 +521,11 @@ export default function BrowsePage() {
 
                   return (
                     <div key={stream.id} className="group flex flex-col gap-2">
-                      <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-gray-800">
+                      <Link
+                        key={`poster-${stream.id}`}
+                        href={`/${section === 'movies' ? 'movie' : 'series'}/${stream.id}`}
+                        className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-gray-800"
+                      >
                         {icon && (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={icon} alt={stream.name}
@@ -491,19 +533,18 @@ export default function BrowsePage() {
                             onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                           />
                         )}
-                        {/* hover overlay + play */}
-                        <button
-                          onClick={() => handlePlay(stream)}
-                          className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
-                          aria-label={`${t('common.play')} ${stream.name}`}
-                        >
-                          <div className="w-11 h-11 bg-white rounded-full flex items-center justify-center">
-                            <Play size={18} className="text-black ml-0.5" fill="black" />
+                        {/* hover overlay */}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition pointer-events-none" />
+                        {/* play icon on hover */}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition">
+                          <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                            <Play size={20} className="text-black ml-0.5" fill="black" />
                           </div>
-                        </button>
+                        </div>
                         {/* fav button — top-right */}
                         <button
                           onClick={(e) => {
+                            e.preventDefault();
                             e.stopPropagation();
                             toggleFavorite({
                               id: Number(stream.id),
@@ -514,15 +555,19 @@ export default function BrowsePage() {
                             });
                           }}
                           aria-label={fav ? t('common.removeFromFavorites') : t('common.addToFavorites')}
-                          className={`absolute top-2 right-2 p-1.5 rounded-full backdrop-blur-sm transition
+                          className={`absolute top-2 right-2 p-1.5 rounded-full backdrop-blur-sm transition z-10
                             ${fav
                               ? 'bg-red-500/80 text-white opacity-100'
                               : 'bg-black/50 text-white/60 opacity-0 group-hover:opacity-100 hover:text-red-400'}`}
                         >
                           <Heart size={13} fill={fav ? 'currentColor' : 'none'} />
                         </button>
-                      </div>
-                      <button onClick={() => handlePlay(stream)} className="text-left">
+                      </Link>
+                      <Link
+                        key={`title-${stream.id}`}
+                        href={`/${section === 'movies' ? 'movie' : 'series'}/${stream.id}`}
+                        className="text-left"
+                      >
                         <p className="text-xs font-medium leading-snug line-clamp-2 text-white/85">{stream.name}</p>
                         {rating != null && rating > 0 && (
                           <div className="flex items-center gap-1 mt-1">
@@ -530,7 +575,7 @@ export default function BrowsePage() {
                             <span className="text-[10px] text-gray-400">{rating.toFixed(1)}</span>
                           </div>
                         )}
-                      </button>
+                      </Link>
                     </div>
                   );
                 })}
@@ -559,6 +604,14 @@ export default function BrowsePage() {
       {/* ── player modal ── */}
       {playing && (
         <Player src={playing.url} onBack={() => setPlaying(null)} />
+      )}
+
+      {/* ── search overlays ── */}
+      {section === 'movies' && (
+        <MovieSearchOverlay open={searchOpen} onClose={closeSearch} />
+      )}
+      {section === 'series' && (
+        <SeriesSearchOverlay open={searchOpen} onClose={closeSearch} />
       )}
 
     </main>

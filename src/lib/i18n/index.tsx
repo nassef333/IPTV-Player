@@ -135,7 +135,7 @@ const translations: Record<Language, Record<string, string>> = {
 };
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('ar');
+  const [language, setLanguage] = useState<Language>('en');
 
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === 'ar' ? 'en' : 'ar'));

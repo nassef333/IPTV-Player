@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=venom&color=0:0f0c29,50:302b63,100:24243e&height=300&section=header&text=IPTV%20PLAYER&fontSize=80&fontColor=ffffff&fontAlignY=55&desc=Stream%20Everything.%20Everywhere.%20Instantly.&descAlignY=75&descSize=20&descColor=a78bfa&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=venom&color=0:0f0c29,50:302b63,100:24243e&height=300&section=header&text=MASHAD&fontSize=90&fontColor=ffffff&fontAlignY=55&desc=Stream%20Everything.%20Everywhere.%20Instantly.&descAlignY=75&descSize=20&descColor=a78bfa&animation=fadeIn" width="100%"/>
 
 <br/>
 
@@ -23,7 +23,7 @@
 
 ## 🌌 What Is This?
 
-**IPTV Player** is a modern, open-source streaming platform built for people who want the full entertainment experience — live TV, movies, and TV shows — directly in their browser. Load any M3U playlist and you're instantly inside your own personal streaming service.
+**MASHAD** is a modern, open-source streaming platform built for people who want the full entertainment experience — live TV, movies, and TV shows — directly in their browser. Load any M3U playlist and you're instantly inside your own personal streaming service.
 
 No subscriptions. No setup hell. Just stream.
 
@@ -96,7 +96,7 @@ Pixel-perfect experience from 4K monitors to mobile phones. Every layout element
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        IPTV PLAYER STACK                        │
+│                        MASHAD STACK                        │
 ├──────────────────────────┬──────────────────────────────────────┤
 │  Framework               │  Next.js 16 (App Router)            │
 │  UI Library              │  React 19                           │
@@ -123,8 +123,8 @@ Pixel-perfect experience from 4K monitors to mobile phones. Every layout element
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/yourusername/iptv.git
-cd iptv
+git clone https://github.com/yourusername/mashad.git
+cd mashad
 
 # 2. Install dependencies
 npm install
@@ -166,7 +166,7 @@ Toggle dark/light mode and switch between Arabic and English from the top toolba
 ## 📁 Project Structure
 
 ```
-iptv/
+mashad/
 ├── public/                    # Static assets
 └── src/
     ├── app/                   # Next.js App Router pages
@@ -239,7 +239,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 <br/>
 
-[![⬆ Back to Top](https://img.shields.io/badge/⬆_Back_to_Top-302b63?style=for-the-badge)](#-iptv-player)
+[![⬆ Back to Top](https://img.shields.io/badge/⬆_Back_to_Top-302b63?style=for-the-badge)](#-mashad)
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=120&section=footer" width="100%"/>
 

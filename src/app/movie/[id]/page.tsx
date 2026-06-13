@@ -13,13 +13,18 @@ import { useFavorites } from '@/lib/useFavorites';
 import { usePlaylistUrl } from '@/lib/usePlaylistUrl';
 
 // ─── constants ────────────────────────────────────────────────────────────────
-const XTREAM_BASE = process.env.NEXT_PUBLIC_XTREAM_BASE_URL || '';
-const USERNAME    = process.env.NEXT_PUBLIC_XTREAM_USERNAME  || '';
-const PASSWORD    = process.env.NEXT_PUBLIC_XTREAM_PASSWORD  || '';
+function buildStreamUrl(id: number, playlistUrl: string, ext = 'mkv') {
+  try {
+    const url = new URL(playlistUrl);
+    const baseUrl = url.origin;
+    const username = url.username || url.searchParams.get('username') || '';
+    const password = url.password || url.searchParams.get('password') || '';
 
-function buildStreamUrl(id: number, ext = 'mkv') {
-  if (!XTREAM_BASE || !USERNAME || !PASSWORD) return '';
-  return `${XTREAM_BASE}/movie/${USERNAME}/${PASSWORD}/${id}.${ext}`;
+    if (!username || !password) return '';
+    return `${baseUrl}/movie/${username}/${password}/${id}.${ext}`;
+  } catch {
+    return '';
+  }
 }
 
 function formatBitrate(bps: number) {
@@ -177,7 +182,7 @@ export default function MoviePage() {
   const rating     = parseFloat(m.rating ?? '0');
   const genres     = m.genre ? m.genre.split(',').map(g => g.trim()).filter(Boolean) : [];
   const actors     = (m.cast || m.actors || '').split(',').map(a => a.trim()).filter(Boolean);
-  const streamUrl  = buildStreamUrl(md.stream_id, md.container_extension || 'mkv');
+  const streamUrl  = buildStreamUrl(md.stream_id, playlistUrl || '', md.container_extension || 'mkv');
   const resolution = resolveResolution(m.video?.width, m.video?.height);
   const fps        = m.video?.r_frame_rate ? formatFrameRate(m.video.r_frame_rate) : null;
   const audioLang  = m.audio?.tags?.title || m.audio?.tags?.language || null;
@@ -585,12 +590,12 @@ export default function MoviePage() {
               <div>
                 <SectionTitle>صور من الفيلم</SectionTitle>
                 <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
-                  {m.backdrop_path!.map((src, i) => (
-                    <div key={i}
+                  {m.backdrop_path!.map((src) => (
+                    <div key={src}
                       className="shrink-0 w-64 aspect-video rounded-lg overflow-hidden
                                  border border-white/8 bg-[#1c1c1c]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={src} alt={`صورة ${i + 1}`}
+                      <img src={src} alt="صورة من الفيلم"
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                         onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                       />

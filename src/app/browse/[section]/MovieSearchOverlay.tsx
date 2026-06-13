@@ -9,6 +9,7 @@ import {
   Play, Film, Loader2, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import type { XtreamVodStream } from '@/lib/xtream';
+import { usePlaylistUrl } from '@/lib/usePlaylistUrl';
 
 const PAGE_SIZE = 48;
 
@@ -142,6 +143,7 @@ export default function MovieSearchOverlay({
 }) {
   const inputRef  = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { playlistUrl } = usePlaylistUrl();
 
   // all movies — loaded with pagination
   const [pageItems,  setPageItems]  = useState<XtreamVodStream[]>([]);
@@ -185,8 +187,9 @@ export default function MovieSearchOverlay({
   const loadMovies = useCallback(async () => {
     const minRating = RATING_OPTIONS[ratingIdx].min;
     const minYear = YEAR_OPTIONS[yearIdx].value;
-    
+
     const params = new URLSearchParams({
+      playlistUrl: playlistUrl || '',
       q: query,
       sort,
       rating_min: minRating.toString(),
@@ -229,7 +232,7 @@ export default function MovieSearchOverlay({
     if (open && hasSearched) {
       loadMovies();
     }
-  }, [open, hasSearched, loadMovies]);
+  }, [open, hasSearched, page]);
 
   // ── handle search button click ─────────────────────────────────────────────────
   const handleSearch = useCallback(() => {

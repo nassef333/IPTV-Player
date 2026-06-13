@@ -32,38 +32,56 @@ export default function Player({ src, onBack, inline = false }: PlayerProps) {
   // HLS / native video setup
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !src) return;
+
+    console.log('Player src:', src);
 
     const isHls =
       src.includes('.m3u8') ||
       src.includes('type=m3u') ||
       src.includes('mpegts');
 
+    console.log('Is HLS:', isHls, 'HLS supported:', Hls.isSupported());
+
     if (isHls && Hls.isSupported()) {
       // Clean up any previous hls instance
       if (hlsRef.current) {
         hlsRef.current.destroy();
       }
-      const hls = new Hls({ enableWorker: true });
+      const hls = new Hls({
+        enableWorker: true,
+        debug: true,
+      });
       hlsRef.current = hls;
 
       hls.loadSource(src);
       hls.attachMedia(video);
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch(() => {/* autoplay blocked — user can press play */});
+        console.log('HLS manifest parsed');
+        video.play().then(() => {
+          // Unmute after successful autoplay
+          video.muted = false;
+        }).catch((err) => {
+          console.log('Autoplay blocked:', err);
+          /* autoplay blocked — user can press play */
+        });
       });
 
       hls.on(Hls.Events.ERROR, (_event, data) => {
+        console.error('HLS error:', data);
         if (data.fatal) {
           switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
+              console.log('Network error, retrying...');
               hls.startLoad();
               break;
             case Hls.ErrorTypes.MEDIA_ERROR:
+              console.log('Media error, recovering...');
               hls.recoverMediaError();
               break;
             default:
+              console.log('Fatal error, destroying HLS');
               hls.destroy();
               break;
           }
@@ -71,12 +89,18 @@ export default function Player({ src, onBack, inline = false }: PlayerProps) {
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       // Native HLS (Safari)
+      console.log('Using native HLS');
       video.src = src;
-      video.play().catch(() => {});
+      video.play().then(() => {
+        video.muted = false;
+      }).catch(() => {});
     } else {
       // Plain MP4 or other formats
+      console.log('Using plain video src');
       video.src = src;
-      video.play().catch(() => {});
+      video.play().then(() => {
+        video.muted = false;
+      }).catch(() => {});
     }
 
     return () => {
@@ -115,6 +139,8 @@ export default function Player({ src, onBack, inline = false }: PlayerProps) {
           slot="media"
           playsInline
           crossOrigin="anonymous"
+          autoPlay
+          muted
           className="w-full h-full object-contain"
         />
         <media-loading-indicator slot="centered-chrome" />
