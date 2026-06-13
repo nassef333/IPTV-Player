@@ -1,6 +1,37 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=venom&color=0:0f0c29,50:302b63,100:24243e&height=300&section=header&text=MASHAD&fontSize=90&fontColor=ffffff&fontAlignY=55&desc=Stream%20Everything.%20Everywhere.%20Instantly.&descAlignY=75&descSize=20&descColor=a78bfa&animation=fadeIn" width="100%"/>
+<svg width="100%" viewBox="0 0 760 240" role="img" xmlns="http://www.w3.org/2000/svg" style="">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">MASHAD banner preview</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Preview of the capsule-render venom banner for MASHAD</desc>
+
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f0c29"/>
+      <stop offset="50%" stop-color="#302b63"/>
+      <stop offset="100%" stop-color="#24243e"/>
+    </linearGradient>
+    <linearGradient id="venomBlob1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1640" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0f0c29" stop-opacity="0.7"/>
+    </linearGradient>
+  </defs>
+
+  
+  <rect width="680" height="200" fill="url(#bgGrad)" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  
+  <ellipse cx="60" cy="30" rx="120" ry="55" fill="#1e1b4b" opacity="0.7" transform="rotate(-20 60 30)" style="fill:rgb(30, 27, 75);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="620" cy="170" rx="130" ry="50" fill="#1e1b4b" opacity="0.6" transform="rotate(15 620 170)" style="fill:rgb(30, 27, 75);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="340" cy="10" rx="200" ry="40" fill="#130f30" opacity="0.5" style="fill:rgb(19, 15, 48);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="200" cy="195" rx="160" ry="35" fill="#130f30" opacity="0.45" transform="rotate(-10 200 195)" style="fill:rgb(19, 15, 48);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.45;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="580" cy="20" rx="100" ry="30" fill="#1a1750" opacity="0.5" transform="rotate(10 580 20)" style="fill:rgb(26, 23, 80);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  
+  <text x="340" y="100" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="72" font-weight="900" fill="white" letter-spacing="10" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Arial Black&quot;, sans-serif;font-size:72px;font-weight:900;text-anchor:middle;dominant-baseline:auto">MASHAD</text>
+
+  
+  <text x="340" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#a78bfa" letter-spacing="2" style="fill:rgb(167, 139, 250);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Arial, sans-serif;font-size:16px;font-weight:400;text-anchor:middle;dominant-baseline:auto">Stream Everything. Everywhere. Instantly.</text>
+</svg>
 
 <br/>
 
